@@ -1,127 +1,72 @@
-import { createReducer, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
-import { cardDesignActions } from '../cardDesign/cardDesignSlice';
 
-// initialize the api url in axios default url
-axios.defaults.baseURL = 'https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/eZNPE2dPLtWHMUhnsTBH/books';
+// Actions
+const Addbook = 'bookstore/books/ADD_BOOK';
+const Removebook = 'bookstore/books/REMOVE_BOOK';
+const GetBooks = 'bookstore/books/GET_BOOKS';
+const api = 'https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/v74KU1kb6ATX7KCQFVTz/books/';
 
-// actions
-export const fetchBooks = createAsyncThunk(
-  'book/fetch_books',
-  async (arg, thunkAPI) => {
-    try {
-      thunkAPI.dispatch(cardDesignActions.pendingModal());
-      const response = await axios.get();
-      if (response.status !== 200) {
-        throw Error('Something went wrong!!');
-      }
-      const data = { ...response.data };
-      if (!data) {
-        throw Error('No Data found!');
-      }
-      const booksArr = [];
-      Object.keys(data).forEach((key) => {
-        booksArr.push({
-          id: key,
-          title: data[key][0].title,
-          author: data[key][0].author,
-          category: data[key][0].category,
-        });
-      });
+// intial State
+const initialState = [];
 
-      thunkAPI.dispatch(cardDesignActions.closeModal());
-      return booksArr || [];
-    } catch (err) {
-      thunkAPI.dispatch(
-        cardDesignActions.rejectModal(err.message || 'Failed to create the book!!'),
-      );
-    }
-    return null;
-  },
-);
-
-export const postANewBook = createAsyncThunk(
-  'books/add',
-  async (book, thunkAPI) => {
-    try {
-      const bookData = {
-        item_id: uuidv4(),
-        title: book.title,
-        author: book.author,
-        category: book.category,
-      };
-      thunkAPI.dispatch(cardDesignActions.pendingModal());
-      const response = await axios.post('', { ...bookData });
-      if (response.status === 201) {
-        thunkAPI.dispatch(
-          cardDesignActions.successModal('Book is successfully created!!'),
-        );
-        return bookData;
-      }
-    } catch (err) {
-      thunkAPI.dispatch(
-        cardDesignActions.rejectModal(err.message || 'Failed to create the book!!'),
-      );
-    }
-
-    return null;
-  },
-);
-
-export const removeBook = createAsyncThunk(
-  'book/remove',
-  async (id, thunkAPI) => {
-    try {
-      thunkAPI.dispatch(cardDesignActions.pendingModal());
-      const response = await axios.delete(`/${id}`);
-      if (response.status !== 201) {
-        throw Error('Failed to delete the book!!');
-      }
-      thunkAPI.dispatch(cardDesignActions.successModal(response.data));
-      return id;
-    } catch (err) {
-      thunkAPI.dispatch(
-        cardDesignActions.rejectModal(err.message || 'Failed to delete the book!!'),
-      );
-    }
-    return null;
-  },
-);
-
-// initialState
-const initialState = {
-  books: [],
+// Reducer
+const booksReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case Addbook:
+      return [...state, action.payload];
+    case Removebook:
+      return state.filter((book) => book.id !== action.id);
+    case GetBooks:
+      return action.payload;
+    default:
+      return state;
+  }
 };
 
-// reducer
-const booksReducer = createReducer(initialState, (builder) => {
-  builder.addCase(fetchBooks.fulfilled, (state, action) => {
-    const updatedState = {
-      ...state,
-      books: [...action.payload],
-    };
-    return updatedState;
+// Action Creators
+const getBooks = () => async (dispatch) => {
+  const allBook = [];
+  const response = await axios.get(api);
+  const books = Object.values(response.data);
+  const keys = Object.keys(response.data);
+  books.forEach((book, index) => {
+    allBook.push({
+      id: keys[index],
+      title: book[0].title,
+      author: book[0].author,
+      category: book[0].category,
+      complete: Math.floor(Math.random() * 100),
+      chapter: Math.floor(Math.random() * 10),
+    });
   });
-
-  builder.addCase(removeBook.fulfilled, (state, action) => {
-    const updatedBooks = [...state.books].filter(
-      (book) => book.id !== action.payload,
-    );
-    return { ...state, books: updatedBooks };
+  dispatch({
+    type: GetBooks,
+    payload: allBook,
   });
+};
 
-  builder.addCase(postANewBook.fulfilled, (state, { payload }) => {
-    const book = {
-      id: payload.item_id,
-      title: payload.title,
-      author: payload.author,
-      category: payload.category,
-    };
-    const updatedState = { ...state, books: [...state.books, { ...book }] };
-    return updatedState;
+const addBook = (payload) => async (dispatch) => {
+  const book = {
+    item_id: `${payload.id}`,
+    title: `${payload.title}`,
+    author: `${payload.author}`,
+    category: `${payload.category}`,
+  };
+  await axios.post(api, book);
+  dispatch({
+    type: Addbook,
+    payload: book,
   });
-  builder.addDefaultCase((state) => state);
-});
+};
 
+const removeBook = (id) => async (dispatch) => {
+  await axios.delete(`${api}${id}`);
+  dispatch({
+    type: Removebook,
+    id,
+  });
+};
+
+// Export
+export { addBook, removeBook, getBooks };
 export default booksReducer;
