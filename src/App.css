@@ -7,15 +7,15 @@
 html,
 body {
   color: #121212;
-  background: #f3f4f8;
+  background: rgb(243, 244, 248);
   font-family: sans-serif;
 }
 
 a {
-  color: #8f8f8f;
+  color: rgb(143, 143, 143);
   text-decoration: none;
 }
 
 a.active {
-  color: #121212;
+  color: rgb(18, 18, 18);
 }

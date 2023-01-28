@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { ADD_BOOK } from '../../redux/books/books';
+import { postANewBook } from '../../redux/books/books';
 import Card from '../cardDesign/Card';
 
 const AddNewBook = () => {
+  // state
   const [title, setTitle] = useState('');
   const [isTitleValid, setIsTitleValid] = useState(true);
   const [author, setAuthor] = useState('');
@@ -14,6 +15,7 @@ const AddNewBook = () => {
 
   const dispatch = useDispatch();
 
+  // handlers
   const titleChangeHandler = (event) => {
     const bookTitle = event.target.value;
     setTitle(bookTitle);
@@ -38,13 +40,15 @@ const AddNewBook = () => {
     event.preventDefault();
     if (isFormValid) {
       dispatch(
-        ADD_BOOK({
+        postANewBook({
           title: title.trim(),
           author: author.trim(),
           category: categoryRef.current.value.trim(),
         }),
       );
+      // call the book reducer action to add book
 
+      // clear inputs field
       setIsFormValid(false);
       setTitle('');
       setAuthor('');
@@ -66,7 +70,7 @@ const AddNewBook = () => {
 
   return (
     <Card>
-      <h1>Add New Book</h1>
+      <h3>Add New Book</h3>
       <form onSubmit={addBookHandler}>
         <div className={!isTitleValid ? 'invalid' : ''}>
           <p>{!isTitleValid && 'Book title should be 3 to 55 char long!'}</p>
