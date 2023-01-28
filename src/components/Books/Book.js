@@ -14,7 +14,7 @@ const Book = ({
   };
 
   return (
-    <li>
+    <ul>
       <Card id={id}>
         <div>
           <h1>{category}</h1>
@@ -29,7 +29,7 @@ const Book = ({
           <button type="button">Update Progress</button>
         </div>
       </Card>
-    </li>
+    </ul>
   );
 };
 

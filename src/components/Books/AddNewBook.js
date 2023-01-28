@@ -5,7 +5,6 @@ import { ADD_BOOK } from '../../redux/books/books';
 import Card from '../cardDesign/Card';
 
 const AddNewBook = () => {
-  // state
   const [title, setTitle] = useState('');
   const [isTitleValid, setIsTitleValid] = useState(true);
   const [author, setAuthor] = useState('');
@@ -15,7 +14,6 @@ const AddNewBook = () => {
 
   const dispatch = useDispatch();
 
-  // handlers
   const titleChangeHandler = (event) => {
     const bookTitle = event.target.value;
     setTitle(bookTitle);
@@ -39,7 +37,6 @@ const AddNewBook = () => {
   const addBookHandler = (event) => {
     event.preventDefault();
     if (isFormValid) {
-      // call the book reducer action to add book
       dispatch(
         ADD_BOOK({
           title: title.trim(),
@@ -48,7 +45,6 @@ const AddNewBook = () => {
         }),
       );
 
-      // clear inputs field
       setIsFormValid(false);
       setTitle('');
       setAuthor('');

@@ -4,26 +4,7 @@ export const ADD_BOOK = createAction('books/add');
 export const REMOVE_BOOK = createAction('book/remove');
 
 const initialState = {
-  books: [
-    {
-      id: '1',
-      title: 'The Hunger Games',
-      author: 'Suzanne Collins',
-      category: 'Action',
-    },
-    {
-      id: '2',
-      title: 'Dune',
-      author: 'Frank Herbert',
-      category: 'Science Fiction',
-    },
-    {
-      id: '3',
-      title: 'Capital in the Twenty-First Century',
-      author: 'Suzanne Collins',
-      category: 'Economy',
-    },
-  ],
+  books: [],
 };
 
 const booksReducer = createReducer(initialState, (builder) => {
