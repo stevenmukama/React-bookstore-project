@@ -1,0 +1,8 @@
+* {
+  margin: 0;
+}
+
+.card {
+  border: 1px solid #e8e8e8;
+  font-size: medium;
+}
