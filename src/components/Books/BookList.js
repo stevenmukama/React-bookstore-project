@@ -4,16 +4,18 @@ import Book from './Book';
 
 const BookList = ({ books, onRemoveBook }) => (
   <ul>
-    {books.map((book) => (
-      <Book
-        key={book.id}
-        id={book.id}
-        title={book.title}
-        author={book.author}
-        category={book.category}
-        onRemoveBookHandler={onRemoveBook}
-      />
-    ))}
+    <li>
+      {books.map((book) => (
+        <Book
+          key={book.id}
+          id={book.id}
+          title={book.title}
+          author={book.author}
+          category={book.category}
+          onRemoveBookHandler={onRemoveBook}
+        />
+      ))}
+    </li>
   </ul>
 );
 
