@@ -24,9 +24,9 @@
 
 <!-- PROJECT DESCRIPTION -->
 
-# 📖 [Bookstore components] <a name="about-project"></a>
+# 📖 [Bookstore Web app] <a name="about-project"></a>
 
-**[Bookstore components]** is a web app built with reactjs and css. 
+**[Bookstore Web app]** is a web app built with reactjs and css. 
 
 ## 🛠 Built With <a name="built-with"></a>
 
@@ -60,6 +60,7 @@
 - **[view_books]**
 - **[change_routes]**
 - **[Add_books]**
+- **[Remove_books]**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -79,8 +80,7 @@ In order to run this project you need:
 
 Clone this repository to your desired folder:
 
-git clone git@github.com:stevenmukama/React-magician.git React-magician
-
+git clone git@github.com:stevenmukama/React-bookstore-project.git
 
 <!--
 Example commands:
@@ -95,11 +95,11 @@ Example commands:
 
 Install this project with:
 
-cd React-magician
+cd React-bookstore-project
  
 npm install 
 
-git checkout bookstore-components
+git checkout React-bookstore-project
 <!--
 Example command:
 
